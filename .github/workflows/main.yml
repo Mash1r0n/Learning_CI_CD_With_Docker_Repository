@@ -17,6 +17,9 @@ jobs:
           
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Convert repository name to lowercase
+        run: echo "REPO_NAME=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
         
       - name: Build and test
         uses: docker/build-push-action@v6
@@ -30,4 +33,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           target: final
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:latest
